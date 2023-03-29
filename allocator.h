@@ -1,11 +1,15 @@
 #pragma once
 
-#include <cstdint>
-
+template<typename T, size_t size>
 class Allocator {
 public:
-    explicit Allocator(std::size_t size) : size(size) {}
+    Allocator() {
 
+    }
+
+    
 private:
-    std::size_t size;
+    size_t allocated_size {0};
+    T* data {nullptr};
+
 };

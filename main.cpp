@@ -7,7 +7,15 @@
 
 int main(int, char**) {
     try {
-        std::cout << tools::factorial(10) << std::endl;
+        List<int> l{};
+        std::cout << l.empty() << std::endl;
+        l.push_back(3);
+        l.push_back(123);
+        l.push_back(8);
+        std::cout << l.empty() << std::endl;
+        l.print();
+
+        std::cout << std::endl;
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
