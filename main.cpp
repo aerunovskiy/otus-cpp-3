@@ -7,15 +7,13 @@
 
 int main(int, char**) {
     try {
-        List<int> l{};
-        std::cout << l.empty() << std::endl;
-        l.push_back(3);
-        l.push_back(123);
-        l.push_back(8);
-        std::cout << l.empty() << std::endl;
-        l.print();
+        std::map<int, int> factorials;
 
-        std::cout << std::endl;
+        for (uint i {0}; i < 10; ++i)
+            factorials[i] = tools::factorial(i);
+
+        tools::printMap(factorials);
+
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

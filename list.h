@@ -37,7 +37,7 @@ public:
         Node<T>* p = _first;
 
         while (p) {
-            std:: cout << p->data << ' ';
+            std::cout << p->data << ' ';
             p = p->next;
         }
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <iomanip>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -8,6 +11,8 @@ namespace tools
 
 int version();
 
-uint factorial(uint number);
+int factorial(int number);
+
+void printMap(const std::map<int, int>& map);
 
 }

@@ -3,7 +3,7 @@
 template<typename T, size_t size>
 class Allocator {
 public:
-    Allocator() {
+    Allocator() noexcept {
 
     }
 
