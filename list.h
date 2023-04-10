@@ -1,40 +1,51 @@
 #pragma once
 
-#include "node.h"
-
-template<typename T>
+template<class T, class Allocator = std::allocator<T>>
 class List {
+    struct Node {
+        explicit Node(T data) : data(data), next(nullptr) {}
+
+        T data;
+        Node* next;
+    };
 public:
     List() = default;
 
-    List(Node<T>* first, Node<T>* last)
-    : _first(first),
-      _last(last)
-    {}
-
-    void push_back(int i) {
-        Node<T>* new_node = new Node(i);
-
-        ++_size;
-
-        if (empty()) {
-            _first = new_node;
-            _last = new_node;
-            return;
+    ~List() {
+        while (_first != nullptr) {
+            typename Allocator::template rebind<Node>::other nodeAllocator;
+            Node* p = _first;
+            _first = _first->next;
+            nodeAllocator.destroy(p);
+            nodeAllocator.deallocate(p, 1);
         }
-
-        _last->next = new_node;
-        _last = new_node;
     }
 
-    bool empty() const {
+    void push_back(const T& value) {
+        typename Allocator::template rebind<Node>::other nodeAllocator;
+        Node* new_node = nodeAllocator.allocate(1);
+
+        if (!empty()) {
+            nodeAllocator.construct(new_node, std::move(value));
+            _last->next = new_node;
+            _last = _last->next;
+        } else {
+            nodeAllocator.construct(new_node, std::move(value));
+            _first = new_node;
+            _last = _first;
+        }
+
+        ++_size;
+    }
+
+    [[nodiscard]] bool empty() const {
         return _first == nullptr;
     }
 
     void print() const {
         if (empty()) return;
 
-        Node<T>* p = _first;
+        Node* p = _first;
 
         while (p) {
             std::cout << p->data << ' ';
@@ -44,14 +55,14 @@ public:
         std::cout << std::endl;
     }
 
-    size_t size() const {
+    [[nodiscard]] size_t size() const {
         return _size;
     }
 
-    Node<T>* operator[] (const size_t index) {
+    Node* operator[] (const size_t index) {
         if (empty()) return nullptr;
 
-        Node<T>* node = _first;
+        Node* node = _first;
 
         for (size_t i {0}; i < index; ++i) {
             node = node->next;
@@ -62,7 +73,7 @@ public:
     }
 
 private:
-    Node<T>* _first;
-    Node<T>* _last;
+    Node* _first {nullptr};
+    Node* _last {nullptr};
     size_t _size {0};
 };

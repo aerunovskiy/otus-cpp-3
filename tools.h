@@ -13,6 +13,10 @@ int version();
 
 int factorial(int number);
 
-void printMap(const std::map<int, int>& map);
+template <class Allocator>
+void fillMap(std::map<int, int, std::less<int>, Allocator>& map) {
+    for (int i {0}; i < 10; ++i)
+        map.emplace(i, factorial(i));
+}
 
 }
