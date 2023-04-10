@@ -1,6 +1,6 @@
 #pragma once
 
-template<typename T>
+template<class T>
 struct Node {
     explicit Node(T data) : data(data), next(nullptr) {}
 

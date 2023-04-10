@@ -2,7 +2,7 @@
 
 #include "node.h"
 
-template<typename T>
+template<class T, class Allocator = std::allocator<T>>
 class List {
 public:
     List() = default;
@@ -11,6 +11,15 @@ public:
     : _first(first),
       _last(last)
     {}
+
+    ~List() {
+        while (_first != nullptr) {
+            auto p = _first;
+            _first = _first->next;
+            allocator.destroy(p);
+            allocator.deallocate(p, 1);
+        }
+    }
 
     void push_back(int i) {
         Node<T>* new_node = new Node(i);
@@ -27,7 +36,7 @@ public:
         _last = new_node;
     }
 
-    bool empty() const {
+    [[nodiscard]] bool empty() const {
         return _first == nullptr;
     }
 
@@ -44,7 +53,7 @@ public:
         std::cout << std::endl;
     }
 
-    size_t size() const {
+    [[nodiscard]] size_t size() const {
         return _size;
     }
 
@@ -62,6 +71,9 @@ public:
     }
 
 private:
+    using NodeAllocator = typename Allocator::template rebind<Node>::other;
+    NodeAllocator allocator;
+
     Node<T>* _first;
     Node<T>* _last;
     size_t _size {0};
