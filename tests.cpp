@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "list.h"
 #include "tools.h"
 
 #pragma GCC diagnostic push
@@ -12,6 +13,13 @@ class test_class : public testing::Test
 TEST_F(test_class, test_valid_version)
 {
     EXPECT_TRUE(tools::version() > 0);
+}
+
+TEST_F(test_class, push_back_test) {
+    List<int> list;
+    list.push_back(1);
+    EXPECT_EQ(1, list[0]->data);
+    EXPECT_EQ(1, list.size());
 }
 
 int main(int argc, char** argv)
